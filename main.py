@@ -2,6 +2,7 @@ import pandas
 import scipy
 import numpy
 import sklearn
+from sklearn.linear_model import LinearRegression
 import matplotlib.pyplot as pyplot
 
 pop = pandas.read_csv("data/population.csv", thousands=",")
@@ -25,4 +26,8 @@ tax["town"].apply(lambda town: towns_map[town])
 
 tax = pandas.concat([tax, pandas.get_dummies(tax["town"])], axis=1)
 tax.drop("town", inplace=True, axis=1)
-print(tax)
+
+model = LinearRegression()
+x = numpy.array(tax["population"]).reshape(-1, 1)
+y = numpy.array(tax["gross"]).reshape(-1, 1)
+print(model.fit(x, y).coef_)
